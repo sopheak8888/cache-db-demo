@@ -28,7 +28,7 @@ export class FindAllBookDto {
   @Max(100000)
   page: number = 1;
 
-  @ApiPropertyOptional({ example: '1' })
+  @ApiPropertyOptional({ example: '10' })
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()

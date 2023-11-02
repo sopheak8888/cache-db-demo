@@ -1,5 +1,4 @@
 import {
-  UseInterceptors,
   Controller,
   Get,
   Post,
@@ -14,11 +13,9 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { FindAllBookDto } from './dto/find-all-book.dto';
-import { BookInterceptor } from 'interceptor/book.interceptor';
 
 @Controller('book')
 @ApiTags('Book')
-@UseInterceptors(BookInterceptor)
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
