@@ -20,14 +20,6 @@ import { redisStore } from 'cache-manager-redis-store';
       database: process.env.DB_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: process.env.DB_SYNCHRONIZE === 'true',
-      cache: {
-        type: process.env.CACHE_TYPE as any,
-        options: {
-          host: process.env.REDIS_HOST,
-          port: parseInt(process.env.REDIS_PORT as any),
-        },
-        ignoreErrors: true,
-      },
     }),
     CacheModule.register<RedisClientOptions>({
       store: redisStore,
