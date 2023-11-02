@@ -5,12 +5,11 @@ import { IsString, IsNumber, Length, Max } from 'class-validator';
 export class CreateBookDto {
   @ApiProperty({ example: 'title' })
   @IsString()
-  @Length(1, 50)
+  @Length(1, 255)
   title: string;
 
   @ApiProperty({ example: 'description' })
   @IsString()
-  @Length(1, 50)
   description: string;
 
   @ApiProperty({ example: '1.2' })
@@ -18,4 +17,10 @@ export class CreateBookDto {
   @IsNumber()
   @Max(99999999)
   price: number;
+
+  @ApiProperty({ example: '1' })
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @Max(100000)
+  category_id: number;
 }

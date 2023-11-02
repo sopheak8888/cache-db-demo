@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import type { RedisClientOptions } from 'redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
+import { BookCategoryModule } from './book-category/book-category.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { redisStore } from 'cache-manager-redis-store';
       isGlobal: true,
     }),
     BookModule,
+    BookCategoryModule,
   ],
 })
 export class AppModule {}

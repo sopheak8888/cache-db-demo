@@ -53,7 +53,9 @@ export class BookService {
   }
 
   async remove(id: number) {
-    const result = await this.bookRepository.delete(id);
+    const result = await this.bookRepository.update(id, {
+      deleted_at: new Date(),
+    });
     if (result.affected > 0) {
       await this.cacheManager.del('book_list_*');
       await this.cacheManager.del('book_' + id);

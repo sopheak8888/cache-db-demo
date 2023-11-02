@@ -6,13 +6,12 @@ export class UpdateBookDto {
   @ApiProperty({ example: 'title' })
   @IsString()
   @IsOptional()
-  @Length(1, 50)
+  @Length(1, 255)
   title: string;
 
   @ApiProperty({ example: 'description' })
   @IsString()
   @IsOptional()
-  @Length(1, 50)
   description: string;
 
   @ApiProperty({ example: '1.3' })
@@ -21,4 +20,11 @@ export class UpdateBookDto {
   @IsOptional()
   @Max(99999999)
   price: number;
+
+  @ApiProperty({ example: '1' })
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @IsOptional()
+  @Max(100000)
+  category_id: number;
 }

@@ -7,21 +7,12 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Book {
+export class BookCategory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
-  title: string;
-
-  @Column({ type: 'text' })
-  description: string;
-
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  price: number;
-
-  @Column({ type: 'int' })
-  category_id: number;
+  @Column({ type: 'varchar', length: 50, unique: true })
+  name: string;
 
   @Column({ type: 'timestamp', nullable: true, select: false })
   deleted_at: Date;
