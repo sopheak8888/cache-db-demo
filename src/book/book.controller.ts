@@ -1,4 +1,5 @@
 import {
+  UseInterceptors,
   Controller,
   Get,
   Post,
@@ -6,14 +7,18 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
+import { FindAllBookDto } from './dto/find-all-book.dto';
+import { BookInterceptor } from 'interceptor/book.interceptor';
 
 @Controller('book')
-@ApiBearerAuth('Book')
+@ApiTags('Book')
+@UseInterceptors(BookInterceptor)
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
@@ -23,8 +28,8 @@ export class BookController {
   }
 
   @Get()
-  findAll() {
-    return this.bookService.findAll();
+  findAll(@Query() filter: FindAllBookDto) {
+    return this.bookService.findAll(filter);
   }
 
   @Get(':id')
