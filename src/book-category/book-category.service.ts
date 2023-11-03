@@ -1,68 +1,57 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateBookCategoryDto } from './dto/create-book-category.dto';
 import { UpdateBookCategoryDto } from './dto/update-book-category.dto';
 import { FindAllBookCategoryDto } from './dto/find-all-book-category.dto';
 import { BookCategory } from './entities/book-category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 
 @Injectable()
 export class BookCategoryService {
   constructor(
     @InjectRepository(BookCategory)
-    private bookRepository: Repository<BookCategory>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private bookCategoryRepository: Repository<BookCategory>,
   ) {}
 
   async create(createBookCategoryDto: CreateBookCategoryDto) {
-    const result = await this.bookRepository.save(createBookCategoryDto);
-    await this.cacheManager.del('bookCategory_list_*');
+    const result = await this.bookCategoryRepository.save(
+      createBookCategoryDto,
+    );
+    await this.bookCategoryRepository.manager.connection.queryResultCache.clear();
     return result;
   }
 
   async findAll(filter: FindAllBookCategoryDto) {
-    const cache = await this.cacheManager.get(
-      'bookCategory_list_' + JSON.stringify(filter),
-    );
-    if (cache) return cache;
-    const result = await this.bookRepository.findAndCount({
+    const result = await this.bookCategoryRepository.findAndCount({
       skip: (filter.page - 1) * filter.limit,
       take: filter.limit,
+      cache: 10000,
     });
-    await this.cacheManager.set(
-      'bookCategory_' + JSON.stringify(filter),
-      result,
-    );
     return result;
   }
 
   async findOne(id: number) {
-    const cache = await this.cacheManager.get('bookCategory_' + id);
-    if (cache) return cache;
-    const result = await this.bookRepository.findOneBy({ id });
-    if (result) await this.cacheManager.set('bookCategory_' + id, result);
+    const result = await this.bookCategoryRepository.findOne({
+      where: { id },
+      cache: 10000,
+    });
     return result;
   }
 
   async update(id: number, updateBookCategoryDto: UpdateBookCategoryDto) {
-    const result = await this.bookRepository.update(id, updateBookCategoryDto);
-    if (result.affected > 0) {
-      await this.cacheManager.del('bookCategory_list_*');
-      await this.cacheManager.del('bookCategory_' + id);
-    }
+    const result = await this.bookCategoryRepository.update(
+      id,
+      updateBookCategoryDto,
+    );
+    await this.bookCategoryRepository.manager.connection.queryResultCache.clear();
     return result;
   }
 
   async remove(id: number) {
-    const result = await this.bookRepository.update(id, {
+    const result = await this.bookCategoryRepository.update(id, {
       deleted_at: new Date(),
     });
-    if (result.affected > 0) {
-      await this.cacheManager.del('bookCategory_list_*');
-      await this.cacheManager.del('bookCategory_' + id);
-    }
+    await this.bookCategoryRepository.manager.connection.queryResultCache.clear();
     return result;
   }
 }

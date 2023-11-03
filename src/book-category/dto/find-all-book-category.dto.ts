@@ -32,6 +32,6 @@ export class FindAllBookCategoryDto {
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
-  @Max(10)
+  @Max(100)
   limit: number = 10;
 }
