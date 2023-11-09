@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { BookCategoryService } from './book-category.service';
 import { BookCategoryController } from './book-category.controller';
-import { BookCategory } from './entities/book-category.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { BookCategoryInterceptor } from 'interceptor/book-category.interceptor';
+import { BookCategoryProviders } from './entities/book.providers';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BookCategory])],
   controllers: [BookCategoryController],
   providers: [
     BookCategoryService,
+    ...BookCategoryProviders,
     {
       provide: APP_INTERCEPTOR,
       useClass: BookCategoryInterceptor,

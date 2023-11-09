@@ -1,34 +1,19 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Table, Column, Model } from 'sequelize-typescript';
 
-@Entity()
-export class Book {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ type: 'varchar', length: 255, unique: true })
+@Table
+export class Book extends Model {
+  @Column({ type: 'varchar' })
   title: string;
 
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal' })
   price: number;
 
   @Column({ type: 'int' })
   category_id: number;
 
-  @Column({ type: 'timestamp', nullable: true, select: false })
+  @Column({ type: 'timestamp' })
   deleted_at: Date;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }
