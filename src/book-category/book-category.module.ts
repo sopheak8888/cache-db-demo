@@ -3,13 +3,14 @@ import { BookCategoryService } from './book-category.service';
 import { BookCategoryController } from './book-category.controller';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { BookCategoryInterceptor } from 'interceptor/book-category.interceptor';
-import { BookCategoryProviders } from './entities/book.providers';
+import { BookCategory } from './entities/book-category.entity';
+import { SequelizeModule } from '@nestjs/sequelize';
 
 @Module({
+  imports: [SequelizeModule.forFeature([BookCategory])],
   controllers: [BookCategoryController],
   providers: [
     BookCategoryService,
-    ...BookCategoryProviders,
     {
       provide: APP_INTERCEPTOR,
       useClass: BookCategoryInterceptor,

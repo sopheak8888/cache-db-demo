@@ -1,6 +1,8 @@
 import { Table, Column, Model } from 'sequelize-typescript';
 
-@Table
+@Table({
+  tableName: 'books',
+})
 export class Book extends Model {
   @Column({ type: 'varchar' })
   title: string;
@@ -11,7 +13,7 @@ export class Book extends Model {
   @Column({ type: 'decimal' })
   price: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'integer' })
   category_id: number;
 
   @Column({ type: 'timestamp' })

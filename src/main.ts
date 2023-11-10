@@ -11,9 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const options = new DocumentBuilder()
     .setTitle('DB Cache Demo')
-    // .setDescription('This is a automate create docker container api')
     .setVersion('1.0')
-    // .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document, {
